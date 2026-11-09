@@ -9,6 +9,8 @@ English | [中文](README.zh-CN.md)
 - Every clip goes into **one** file; delete entries once you have processed them
 - Verified in ChatGPT, WeChat, Chrome and Terminal
 
+![The bar after selecting text in ChatGPT](docs/images/bar.png)
+
 > The user interface is currently in Chinese only. The labels you will see are listed in [UI labels](#ui-labels) below.
 
 ## Requirements

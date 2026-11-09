@@ -9,6 +9,8 @@
 - 所有摘录追加到**同一个**文件，整理完删掉已处理的条目即可
 - 在 ChatGPT、微信、Chrome、Terminal 等常见 App 里实测可用
 
+![在 ChatGPT 里划词后的横条](docs/images/bar.png)
+
 > 界面目前只有中文。
 
 ## 系统要求
