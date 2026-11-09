@@ -16,9 +16,21 @@
 - macOS 13 或更高（在 macOS 27 / Apple Silicon 上开发测试）
 - Swift 工具链：装 Xcode，或只装命令行工具 `xcode-select --install`
 
-## 安装
+## 下载安装（推荐）
 
-目前需要从源码构建（没有 Apple 开发者账号，暂时无法提供经过公证的下载包）。
+1. 在 [Releases](https://github.com/Mylszd/mac-selection-clipper/releases/latest) 下载 `MacSelectionClipper-x.y.z.zip`，双击解压，把 **Mac Selection Clipper.app** 拖进「应用程序」文件夹。
+2. **第一次打开会被系统拦下**：这个 App 没有经过 Apple 公证（需要付费开发者账号），macOS 会提示「无法验证……是否包含恶意软件」。点「完成」，然后任选一种方式放行，只需一次：
+   - 打开 系统设置 → 隐私与安全性，拉到下方，在「已阻止打开 Mac Selection Clipper」旁点 **仍要打开**，输入开机密码确认；
+   - 或在终端运行：`xattr -dr com.apple.quarantine "/Applications/Mac Selection Clipper.app"`
+3. 再打开 App，按下文授予辅助功能权限。
+
+下载版同时支持 Apple Silicon 和 Intel（Intel 作者没有实测）。**更新到新版本后需要重新授权一次**：在辅助功能列表里删掉旧条目，再打开新版点「授权」。
+
+不放心下载的二进制，可以从源码构建，见下一节。
+
+## 从源码构建
+
+没有 Apple 开发者账号，下载版没有公证；从源码构建则不会被拦截，配合本机证书后重新构建也不用重新授权。
 
 ```bash
 git clone https://github.com/Mylszd/mac-selection-clipper.git

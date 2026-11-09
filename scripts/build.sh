@@ -1,8 +1,17 @@
 #!/bin/bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
-swift build -c release --product MacSelectionClipper
-APP="$PWD/dist/Mac Selection Clipper.app"
+# CLIPPER_UNIVERSAL=1: build arm64 + x86_64 and merge them (used for GitHub releases).
+# CLIPPER_DIST=dir: output directory (default dist).
+BIN=.build/release/MacSelectionClipper
+if [[ "${CLIPPER_UNIVERSAL:-0}" == 1 ]]; then
+    for arch in arm64 x86_64; do swift build -c release --product MacSelectionClipper --triple "$arch-apple-macosx13.0"; done
+    BIN=.build/universal/MacSelectionClipper; mkdir -p .build/universal
+    lipo -create -output "$BIN" .build/arm64-apple-macosx/release/MacSelectionClipper .build/x86_64-apple-macosx/release/MacSelectionClipper
+else
+    swift build -c release --product MacSelectionClipper
+fi
+APP="$PWD/${CLIPPER_DIST:-dist}/Mac Selection Clipper.app"
 # Prefer the stable local identity (scripts/create-signing-identity.sh) so macOS keeps the
 # Accessibility permission across rebuilds; fall back to an ad-hoc signature.
 LOCAL_IDENTITY="Mac Selection Clipper Local Signing"
@@ -10,13 +19,13 @@ if [[ -z "${CLIPPER_SIGN_IDENTITY:-}" ]] && security find-identity -v -p codesig
     CLIPPER_SIGN_IDENTITY="$LOCAL_IDENTITY"
 fi
 IDENTITY="${CLIPPER_SIGN_IDENTITY:--}"
-INPUT_HASH="$(shasum -a 256 .build/release/MacSelectionClipper scripts/build.sh | shasum -a 256 | cut -d ' ' -f 1) $IDENTITY"
+INPUT_HASH="$(shasum -a 256 "$BIN" scripts/build.sh | shasum -a 256 | cut -d ' ' -f 1) $IDENTITY $APP"
 if [[ -f .build/clipper-bundle-input && -d "$APP" && "$(cat .build/clipper-bundle-input)" == "$INPUT_HASH" ]] && codesign --verify --strict "$APP" 2>/dev/null; then
     echo "Unchanged bundle retained (no re-signing): $APP"
     exit 0
 fi
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
-cp .build/release/MacSelectionClipper "$APP/Contents/MacOS/MacSelectionClipper"
+cp "$BIN" "$APP/Contents/MacOS/MacSelectionClipper"
 cat > "$APP/Contents/Info.plist" <<'PLIST'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">

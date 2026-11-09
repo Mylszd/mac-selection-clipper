@@ -1,6 +1,6 @@
 # Known limitations
 
-- **Build from source only.** There is no notarized build. Without the local signing certificate, every rebuild may require granting Accessibility again.
+- **Not notarized.** The release download is ad-hoc signed, so Gatekeeper blocks the first launch until the user allows it, and every update needs the Accessibility permission granted again. Source builds with the local signing certificate avoid both.
 - **Tested on few apps.** Verified by hand (macOS 27, Apple Silicon) in ChatGPT, WeChat 4.x, Chrome and Terminal. Other apps, Intel Macs, macOS 13–15, multiple displays, Spaces and full-screen apps have not been tested systematically.
 - **Some apps cannot be read at all.** Apps that expose neither selected text through Accessibility nor a usable Copy command (canvas-based editors, some games and remote-desktop clients) will not work. Manual ⌘C plus "paste from clipboard" is the workaround.
 - **Electron apps on the first selection.** Turning on an Electron app's accessibility tree takes a moment; the very first selection after the app launches may come back empty. Select again.

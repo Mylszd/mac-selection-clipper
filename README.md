@@ -16,9 +16,21 @@ English | [中文](README.zh-CN.md)
 - macOS 13 or later (developed and tested on macOS 27, Apple Silicon)
 - A Swift toolchain: Xcode, or just the Command Line Tools (`xcode-select --install`)
 
-## Install
+## Download (recommended)
 
-For now you build it from source. There is no notarized download (that needs a paid Apple Developer account).
+1. Download `MacSelectionClipper-x.y.z.zip` from [Releases](https://github.com/Mylszd/mac-selection-clipper/releases/latest), unzip it, and drag **Mac Selection Clipper.app** into Applications.
+2. **macOS blocks the first launch.** The app is not notarized by Apple (that needs a paid developer account), so macOS says it cannot verify the app is free of malware. Click **Done**, then allow it once, either way:
+   - System Settings → Privacy & Security, scroll down, click **Open Anyway** next to "Mac Selection Clipper was blocked", and confirm with your password; or
+   - in Terminal: `xattr -dr com.apple.quarantine "/Applications/Mac Selection Clipper.app"`
+3. Open the app again and grant the Accessibility permission (below).
+
+The download is a universal build for Apple Silicon and Intel (Intel has not been tested). **After updating to a new version, grant the permission again**: remove the old entry from the Accessibility list, open the new version and click 授权.
+
+If you would rather not run a downloaded binary, build from source (next section).
+
+## Build from source
+
+Builds made on your own Mac are not blocked by Gatekeeper, and with the local certificate rebuilds keep the permission.
 
 ```bash
 git clone https://github.com/Mylszd/mac-selection-clipper.git

@@ -26,6 +26,14 @@ macOS ties the Accessibility (TCC) grant to the app's designated requirement. `b
 
 Bundle ID: `io.github.mylszd.MacSelectionClipper`. Changing it invalidates existing Accessibility grants and starts with empty settings (UserDefaults are per bundle ID).
 
+## Releases
+
+```bash
+./scripts/package-release.sh   # -> dist-release/MacSelectionClipper-<version>.zip (+ .sha256)
+```
+
+Builds arm64 and x86_64 separately (`--triple`, which works with the Command Line Tools; `--arch a --arch b` needs full Xcode), merges them with `lipo`, signs ad-hoc and zips with `ditto`. It never touches `dist/`. Ad-hoc is deliberate: it is the signature known to work with the Accessibility permission on other Macs; whether a self-signed certificate created on the build machine works there has not been verified. Bump `CFBundleShortVersionString` / `CFBundleVersion` in `build.sh` before tagging, then `gh release create vX.Y.Z dist-release/*.zip dist-release/*.sha256`.
+
 ## Tests
 
 ```bash
@@ -61,7 +69,7 @@ Sources/MacSelectionClipper/    the AppKit app
   SettingsWindowController.swift
   HistoryWindowController.swift legacy history window (menu entry hidden)
 Tests/CoreChecks/               test executable
-scripts/build.sh, test.sh, create-signing-identity.sh
+scripts/build.sh, test.sh, create-signing-identity.sh, package-release.sh
 scripts/diag/                   standalone AX diagnostic scripts (not part of the app)
 ```
 
